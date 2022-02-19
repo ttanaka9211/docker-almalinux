@@ -28,8 +28,13 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          #file: ${{ matrix.base-image }}/Dockerfile
+          context: .
           push: true
-          tags: ghcr.io/org/repo/${{ matrix.base-image }}:latest
+          tags: user/app:latest
           cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+      
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
