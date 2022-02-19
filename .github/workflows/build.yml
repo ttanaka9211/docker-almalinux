@@ -26,11 +26,8 @@ jobs:
           password: ${{ secrets.CR_PAT}}
 
       - name: Build and push
-        uses: ocker/build-push-action@v1
+        uses: docker/build-push-action@v2
         with:
-          dockerfile: ${{ matrix.images }}/Dockerfile
-          username: ${{ github.actor }}
-          password: ${{ secrets.CR_PAT }}
-          registry: docker.pkg.github.com
-          repository: ttanaka9211/${{ env.IMAGE_NAME }}
-          tags: ${{ env.IMAGE_VERSION }}
+          file: ${{ matrix.base-image }}/Dockerfile
+          push: true
+          tags: ghcr.io/org/repo/${{ matrix.base-image }}:latest
